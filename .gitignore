@@ -1,0 +1,22 @@
+# данные — большие, скачиваются отдельно
+data/raw/*
+!data/raw/.gitkeep
+
+# графики генерируются из ноутбуков
+reports/figures/*
+!reports/figures/.gitkeep
+
+# python / jupyter
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+.venv/
+venv/
+
+# ключи
+kaggle.json
+.env
+
+# IDE
+.idea/
+.vscode/

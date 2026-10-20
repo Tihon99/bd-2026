@@ -3,7 +3,7 @@
 set -e
 
 OUT=data/raw
-TABLES="Competitions Users Teams TeamMemberships Tags CompetitionTags Kernels KernelTags"
+TABLES="Competitions Users Teams TeamMemberships Tags CompetitionTags Kernels KernelTags Submissions"
 
 mkdir -p "$OUT"
 for t in $TABLES; do

@@ -14,6 +14,7 @@ bash scripts/download_data.sh
 ```
 
 Скрипт скачивает только нужные таблицы, весь датасет не нужен.
+Submissions — самая большая таблица, её читаем по частям через `iter_chunks`.
 
 ## Какие таблицы используем
 
@@ -25,6 +26,6 @@ bash scripts/download_data.sh
 | Teams | команды, итоговое место, медаль | 2, 3, 5 |
 | TeamMemberships | кто в какой команде | 2, 3, 5 |
 | Kernels, KernelTags | ноутбуки: просмотры, голоса, теги | 4 |
-| Submissions | посылки (очень большая, пока не качаем) | 3, 5 |
+| Submissions | посылки команд (очень большая, читаем по частям) | 3, 5 |
 
 `PerformanceTier`: 0 — Novice, 1 — Contributor, 2 — Expert, 3 — Master, 4 — Grandmaster, 5 — Staff.

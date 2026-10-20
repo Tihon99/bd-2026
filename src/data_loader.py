@@ -1,5 +1,6 @@
 """Загрузка таблиц Meta Kaggle из data/raw."""
 from pathlib import Path
+from typing import Iterator
 
 import pandas as pd
 
@@ -17,6 +18,7 @@ COLUMNS = {
         "LastSubmissionDate", "Medal", "PrivateLeaderboardRank",
     ],
     "TeamMemberships": ["TeamId", "UserId", "RequestDate"],
+    "Submissions": ["TeamId", "SubmissionDate", "IsAfterDeadline"],
     "Kernels": [
         "Id", "AuthorUserId", "CreationDate", "MadePublicDate",
         "TotalViews", "TotalComments", "TotalVotes",
@@ -31,19 +33,33 @@ DATE_COLUMNS = {
     "Users": ["RegisterDate"],
     "Teams": ["ScoreFirstSubmittedDate", "LastSubmissionDate"],
     "TeamMemberships": ["RequestDate"],
+    "Submissions": ["SubmissionDate"],
     "Kernels": ["CreationDate", "MadePublicDate"],
 }
 
 TIERS = {0: "Novice", 1: "Contributor", 2: "Expert", 3: "Master", 4: "Grandmaster", 5: "Staff"}
 
 
-def load(name: str, nrows: int | None = None) -> pd.DataFrame:
-    """Читает data/raw/<name>.csv, оставляет нужные колонки и парсит даты."""
+def _path(name: str) -> Path:
     path = DATA_DIR / f"{name}.csv"
     if not path.exists():
         raise FileNotFoundError(f"{path} не найден — скачайте данные в data/raw/")
+    return path
 
-    df = pd.read_csv(path, usecols=COLUMNS.get(name), nrows=nrows, low_memory=False)
+
+def _parse_dates(df: pd.DataFrame, name: str) -> pd.DataFrame:
     for col in DATE_COLUMNS.get(name, []):
         df[col] = pd.to_datetime(df[col], format="mixed", errors="coerce")
     return df
+
+
+def load(name: str, nrows: int | None = None) -> pd.DataFrame:
+    """Читает data/raw/<name>.csv, оставляет нужные колонки и парсит даты."""
+    df = pd.read_csv(_path(name), usecols=COLUMNS.get(name), nrows=nrows, low_memory=False)
+    return _parse_dates(df, name)
+
+
+def iter_chunks(name: str, chunksize: int = 1_000_000) -> Iterator[pd.DataFrame]:
+    """Читает большую таблицу (например, Submissions) по частям."""
+    for chunk in pd.read_csv(_path(name), usecols=COLUMNS.get(name), chunksize=chunksize):
+        yield _parse_dates(chunk, name)

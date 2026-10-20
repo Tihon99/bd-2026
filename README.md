@@ -18,9 +18,11 @@
 ## Структура
 
 ```
-data/raw/          CSV из Meta Kaggle (в git не попадают)
-notebooks/         ноутбуки с анализом
-src/               общий код (загрузка данных и т.п.)
+data/raw/          CSV из Meta Kaggle (в git не попадают), см. data/README.md
+docs/              план работы
+notebooks/         ноутбуки с анализом (номер = номер задачи)
+scripts/           скачивание данных
+src/               общий код (загрузка данных)
 reports/figures/   графики
 ```
 
@@ -29,6 +31,18 @@ reports/figures/   графики
 ```bash
 python -m venv .venv
 pip install -r requirements.txt
+bash scripts/download_data.sh
+jupyter notebook notebooks/
 ```
 
-Данные положить в `data/raw/`.
+## Прогресс
+
+| Ноутбук | Задача | Состояние |
+|---|---|---|
+| `01_competitions.ipynb` | Динамика соревнований | первичный EDA |
+| `02_users.ipynb` | Профили участников | первичный EDA |
+| `03_teams.ipynb` | Команды и успех | размер команды vs место |
+| `04_kernels.ipynb` | Популярность ноутбуков | первичный EDA |
+| — | Прогнозная модель | не начата |
+
+Подробный план — в [docs/plan.md](docs/plan.md).

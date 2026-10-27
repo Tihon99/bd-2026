@@ -51,7 +51,9 @@ def submission_counts(teams: pd.DataFrame, competitions: pd.DataFrame, first_day
 
     parts = []
     for chunk in iter_chunks("Submissions"):
-        chunk = chunk[chunk["IsAfterDeadline"] != True]  # noqa: E712 — колонка может содержать NaN
+        # в CSV флаг может прийти как bool или как строка "True"/"False" — приводим к строке
+        after_deadline = chunk["IsAfterDeadline"].astype(str).str.lower().eq("true")
+        chunk = chunk[~after_deadline]
         days = (chunk["SubmissionDate"] - chunk["TeamId"].map(start)).dt.days
         chunk = chunk.assign(early=(days >= 0) & (days < first_days))
         parts.append(chunk.groupby("TeamId").agg(n_subs=("early", "size"), n_subs_early=("early", "sum")))

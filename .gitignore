@@ -6,6 +6,9 @@ data/raw/*
 reports/figures/*
 !reports/figures/.gitkeep
 
+# промежуточные данные (датасет для модели)
+data/processed/
+
 # python / jupyter
 __pycache__/
 *.pyc

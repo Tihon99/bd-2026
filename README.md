@@ -32,6 +32,7 @@ reports/figures/   графики
 python -m venv .venv
 pip install -r requirements.txt
 bash scripts/download_data.sh
+python -m src.build_dataset   # датасет для модели (долго, один раз)
 jupyter notebook notebooks/
 ```
 
@@ -43,6 +44,15 @@ jupyter notebook notebooks/
 | `02_users.ipynb` | Профили участников | первичный EDA |
 | `03_teams.ipynb` | Команды и успех | размер команды vs место |
 | `04_kernels.ipynb` | Популярность ноутбуков | первичный EDA |
-| — | Прогнозная модель | не начата |
+| `05_topics.ipynb` | Динамика соревнований | темы CV / NLP / табличные / временные ряды |
+| `06_retention_by_tier.ipynb` | Профили участников | удержание по уровням |
+| `07_teams_experience.ipynb` | Команды и успех | опыт участников и посылки vs место |
+| `08_tags_clustering.ipynb` | Популярность ноутбуков | кластеры тегов |
+| `09_baseline.ipynb` | Прогнозная модель | базовые решения и результаты реального запуска |
+| `10_lightgbm.ipynb` | Прогнозная модель | LightGBM, сравнение, важность признаков |
 
-Подробный план — в [docs/plan.md](docs/plan.md).
+Общий код: `src/data_loader.py` (загрузка, чтение Submissions по частям),
+`src/features.py` (признаки команд), `src/topics.py` (темы по тегам),
+`src/build_dataset.py` (датасет для модели, кеш в `data/processed/`), `src/modeling.py` (разбиение, метрики, базовые модели).
+
+Реальная проверка и ограничения: [docs/REAL_DATA_CHECK.md](docs/REAL_DATA_CHECK.md). Подробный план — в [docs/plan.md](docs/plan.md).

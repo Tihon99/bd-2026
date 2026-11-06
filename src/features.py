@@ -12,15 +12,20 @@ def team_sizes(members: pd.DataFrame) -> pd.Series:
 def member_experience(teams: pd.DataFrame, members: pd.DataFrame) -> pd.DataFrame:
     """Для каждого участника команды — в скольких соревнованиях он был до этого.
 
-    Порядок соревнований определяем по дате первой посылки команды.
+    В Meta Kaggle ScoreFirstSubmittedDate отсутствует в текущей выгрузке.
+    Используем RequestDate членства в команде как доступную дату участия.
     """
-    part = members[["TeamId", "UserId"]].merge(
-        teams[["Id", "CompetitionId", "ScoreFirstSubmittedDate"]],
+    part = members[["TeamId", "UserId", "RequestDate"]].merge(
+        teams[["Id", "CompetitionId"]],
         left_on="TeamId", right_on="Id",
     )
-    part = part.dropna(subset=["ScoreFirstSubmittedDate"])
-    part = part.sort_values(["UserId", "ScoreFirstSubmittedDate"])
-    part["prev_comps"] = part.groupby("UserId").cumcount()
+    part = part.dropna(subset=["RequestDate"])
+    order = part.sort_values(["UserId", "RequestDate", "CompetitionId"])
+    history = order.drop_duplicates(["UserId", "CompetitionId"])[
+        ["UserId", "CompetitionId"]
+    ].copy()
+    history["prev_comps"] = history.groupby("UserId").cumcount()
+    part = part.merge(history, on=["UserId", "CompetitionId"], how="left")
     return part[["TeamId", "UserId", "CompetitionId", "prev_comps"]]
 
 

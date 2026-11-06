@@ -48,11 +48,11 @@ jupyter notebook notebooks/
 | `06_retention_by_tier.ipynb` | Профили участников | удержание по уровням |
 | `07_teams_experience.ipynb` | Команды и успех | опыт участников и посылки vs место |
 | `08_tags_clustering.ipynb` | Популярность ноутбуков | кластеры тегов |
-| `09_baseline.ipynb` | Прогнозная модель | базовые решения: константа, правило, логрегрессия |
+| `09_baseline.ipynb` | Прогнозная модель | базовые решения и результаты реального запуска |
 | `10_lightgbm.ipynb` | Прогнозная модель | LightGBM, сравнение, важность признаков |
 
 Общий код: `src/data_loader.py` (загрузка, чтение Submissions по частям),
 `src/features.py` (признаки команд), `src/topics.py` (темы по тегам),
 `src/build_dataset.py` (датасет для модели, кеш в `data/processed/`), `src/modeling.py` (разбиение, метрики, базовые модели).
 
-Подробный план — в [docs/plan.md](docs/plan.md).
+Реальная проверка и ограничения: [docs/REAL_DATA_CHECK.md](docs/REAL_DATA_CHECK.md). Подробный план — в [docs/plan.md](docs/plan.md).

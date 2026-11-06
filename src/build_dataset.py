@@ -14,7 +14,9 @@ PROCESSED_DIR = Path(__file__).resolve().parents[1] / "data" / "processed"
 DATASET_PATH = PROCESSED_DIR / "teams_dataset.parquet"
 
 # Только то, что известно в начале соревнования (общее число посылок — нет, это утечка)
-FEATURES = ["team_size", "max_prev_comps", "mean_prev_comps", "max_tier", "n_subs_first7d"]
+# PerformanceTier в текущей выгрузке — уровень на сегодня, он может зависеть
+# от результата этого соревнования. Не используем его, чтобы избежать утечки.
+FEATURES = ["team_size", "max_prev_comps", "mean_prev_comps", "n_subs_first7d"]
 TARGET = "top10"
 
 

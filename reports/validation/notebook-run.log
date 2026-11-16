@@ -1,0 +1,41 @@
+RUN 01_competitions.ipynb
+01_competitions.ipynb:cell5:9: UserWarning: FigureCanvasAgg is non-interactive, and thus cannot be shown
+01_competitions.ipynb:cell10:4: UserWarning: FigureCanvasAgg is non-interactive, and thus cannot be shown
+OK 01_competitions.ipynb
+RUN 02_users.ipynb
+02_users.ipynb:cell5:3: UserWarning: FigureCanvasAgg is non-interactive, and thus cannot be shown
+02_users.ipynb:cell9:4: UserWarning: FigureCanvasAgg is non-interactive, and thus cannot be shown
+OK 02_users.ipynb
+RUN 03_teams.ipynb
+03_teams.ipynb:cell6:6: UserWarning: FigureCanvasAgg is non-interactive, and thus cannot be shown
+OK 03_teams.ipynb
+RUN 04_kernels.ipynb
+04_kernels.ipynb:cell4:5: UserWarning: FigureCanvasAgg is non-interactive, and thus cannot be shown
+OK 04_kernels.ipynb
+RUN 05_topics.ipynb
+05_topics.ipynb:cell4:6: UserWarning: FigureCanvasAgg is non-interactive, and thus cannot be shown
+05_topics.ipynb:cell7:4: UserWarning: FigureCanvasAgg is non-interactive, and thus cannot be shown
+OK 05_topics.ipynb
+RUN 06_retention_by_tier.ipynb
+06_retention_by_tier.ipynb:cell6:3: UserWarning: FigureCanvasAgg is non-interactive, and thus cannot be shown
+06_retention_by_tier.ipynb:cell9:4: UserWarning: FigureCanvasAgg is non-interactive, and thus cannot be shown
+OK 06_retention_by_tier.ipynb
+RUN 07_teams_experience.ipynb
+07_teams_experience.ipynb:cell9:7: UserWarning: FigureCanvasAgg is non-interactive, and thus cannot be shown
+OK 07_teams_experience.ipynb
+RUN 08_tags_clustering.ipynb
+0 sklearn, feature engineering, xgboost, regression, random forest, linear regression, logistic regression, lightgbm, decision tree, ensembling, gradient boosting, svm
+1 gpu, pandas, matplotlib, numpy, seaborn, tensorflow, personal benchmark, keras, cv2, utility script, tpu, scipy
+2 classification, binary classification, model comparison, multiclass classification, health, healthcare, model explainability, biology, heart conditions, cancer, medicine, health conditions
+3 data analytics, data cleaning, data storytelling, ggplot2, tidyverse, r, health and fitness, sql, marketing, cycling, bigquery
+4 beginner, python, programming, business, tabular, intermediate, time series analysis, finance, scheduled, games, advanced, automl
+5 nlp, text, nltk, transformers, lstm, naive bayes, recommender systems, text mining, text classification, rnn, spaCy, news
+6 data visualization, exploratory data analysis, plotly, education, statistical analysis, clustering, covid19, exercise, sports, k-means, movies and tv shows, video games
+7 deep learning, cnn, image, neural networks, computer vision, pytorch, artificial intelligence, transfer learning, image classification, animals, gan, science and technology
+OK 08_tags_clustering.ipynb
+RUN 09_baseline.ipynb
+OK 09_baseline.ipynb
+RUN 10_lightgbm.ipynb
+10_lightgbm.ipynb:cell7:6: UserWarning: FigureCanvasAgg is non-interactive, and thus cannot be shown
+10_lightgbm.ipynb:cell9:4: UserWarning: FigureCanvasAgg is non-interactive, and thus cannot be shown
+OK 10_lightgbm.ipynb

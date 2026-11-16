@@ -12,15 +12,20 @@ def team_sizes(members: pd.DataFrame) -> pd.Series:
 def member_experience(teams: pd.DataFrame, members: pd.DataFrame) -> pd.DataFrame:
     """Для каждого участника команды — в скольких соревнованиях он был до этого.
 
-    Порядок соревнований определяем по дате первой посылки команды.
+    В Meta Kaggle ScoreFirstSubmittedDate отсутствует в текущей выгрузке.
+    Используем RequestDate членства в команде как доступную дату участия.
     """
-    part = members[["TeamId", "UserId"]].merge(
-        teams[["Id", "CompetitionId", "ScoreFirstSubmittedDate"]],
+    part = members[["TeamId", "UserId", "RequestDate"]].merge(
+        teams[["Id", "CompetitionId"]],
         left_on="TeamId", right_on="Id",
     )
-    part = part.dropna(subset=["ScoreFirstSubmittedDate"])
-    part = part.sort_values(["UserId", "ScoreFirstSubmittedDate"])
-    part["prev_comps"] = part.groupby("UserId").cumcount()
+    part = part.dropna(subset=["RequestDate"])
+    order = part.sort_values(["UserId", "RequestDate", "CompetitionId"])
+    history = order.drop_duplicates(["UserId", "CompetitionId"])[
+        ["UserId", "CompetitionId"]
+    ].copy()
+    history["prev_comps"] = history.groupby("UserId").cumcount()
+    part = part.merge(history, on=["UserId", "CompetitionId"], how="left")
     return part[["TeamId", "UserId", "CompetitionId", "prev_comps"]]
 
 
@@ -51,7 +56,9 @@ def submission_counts(teams: pd.DataFrame, competitions: pd.DataFrame, first_day
 
     parts = []
     for chunk in iter_chunks("Submissions"):
-        chunk = chunk[chunk["IsAfterDeadline"] != True]  # noqa: E712 — колонка может содержать NaN
+        # в CSV флаг может прийти как bool или как строка "True"/"False" — приводим к строке
+        after_deadline = chunk["IsAfterDeadline"].astype(str).str.lower().eq("true")
+        chunk = chunk[~after_deadline]
         days = (chunk["SubmissionDate"] - chunk["TeamId"].map(start)).dt.days
         chunk = chunk.assign(early=(days >= 0) & (days < first_days))
         parts.append(chunk.groupby("TeamId").agg(n_subs=("early", "size"), n_subs_early=("early", "sum")))

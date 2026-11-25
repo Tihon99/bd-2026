@@ -1,0 +1,18 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "bd-meta-kaggle"
+version = "0.1.0"
+requires-python = ">=3.10"
+dependencies = ["pandas>=2", "matplotlib", "numpy", "scikit-learn", "lightgbm", "pyarrow"]
+
+[project.scripts]
+meta-kaggle-competitions = "src.competition_report:main"
+
+meta-kaggle-teams = "src.team_report:main"
+meta-kaggle-model = "src.model_report:main"
+
+[tool.setuptools.packages.find]
+include = ["src"]

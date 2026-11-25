@@ -1,58 +1,23 @@
-# Анализ соревнований и сообщества Kaggle
+# Анализ соревнований Kaggle по Meta Kaggle
 
-Учебный проект: исследуем соревнования, участников, команды и ноутбуки Kaggle
-по открытому датасету [Meta Kaggle](https://www.kaggle.com/datasets/kaggle/meta-kaggle).
+Проект исследует состав и темы соревнований, результаты команд и качество модели для определения попадания в верхние 10% итогового рейтинга.
 
-## Задачи
+- [Какие соревнования вошли в анализ](docs/COMPETITION_FINDINGS%20%281%29.md)
+- [Отчёт для офлайн-чтения](reports/review/report.pdf)
+- [Слайды для офлайн-просмотра](reports/review/slides.pdf)
 
-1. **Динамика соревнований** — число соревнований по годам, типы (Featured, Research,
-   Playground, Getting Started), призовые фонды, тематика, число участников и команд.
-2. **Профили участников** — распределение по уровням (Novice … Grandmaster),
-   сколько людей уходит после первого соревнования, как долго остаются активными.
-3. **Команды и успех** — влияние размера команды, опыта и числа посылок на итоговое место.
-4. **Популярность ноутбуков и датасетов** — что связано с голосами и просмотрами,
-   кластеризация тем по тегам.
-5. **Прогнозная модель** — попадание команды в топ-10% по признакам первых недель
-   соревнования (градиентный бустинг против простого бейзлайна).
+## Воспроизведение
 
-## Структура
-
-```
-data/raw/          CSV из Meta Kaggle (в git не попадают), см. data/README.md
-docs/              план работы
-notebooks/         ноутбуки с анализом (номер = номер задачи)
-scripts/           скачивание данных
-src/               общий код (загрузка данных)
-reports/figures/   графики
-```
-
-## Запуск
+Установите пакет командой `python -m pip install .` (Python 3.10 или новее). Подготовьте CSV по [инструкции](data/README.md). Запуск из корня репозитория:
 
 ```bash
-python -m venv .venv
-pip install -r requirements.txt
-bash scripts/download_data.sh
-python -m src.build_dataset   # датасет для модели (долго, один раз)
-jupyter notebook notebooks/
+python -m src.competition_report --data data/raw --out output --snapshot 2026-11-06
+python -m src.build_dataset
+python -m src.team_report --dataset data/processed/teams_dataset.parquet --out output
+python -m src.model_report --dataset data/processed/teams_dataset.parquet --out output
+python -m unittest discover -s tests -v
 ```
 
-## Прогресс
+Укажите фактическую дату получения CSV в `--snapshot`. Тесты используют искусственные примеры из `tests/fixtures` и работают без Kaggle. При наличии модуля `build` команда `python -m build` собирает дистрибутив.
 
-| Ноутбук | Задача | Состояние |
-|---|---|---|
-| `01_competitions.ipynb` | Динамика соревнований | первичный EDA |
-| `02_users.ipynb` | Профили участников | первичный EDA |
-| `03_teams.ipynb` | Команды и успех | размер команды vs место |
-| `04_kernels.ipynb` | Популярность ноутбуков | первичный EDA |
-| `05_topics.ipynb` | Динамика соревнований | темы CV / NLP / табличные / временные ряды |
-| `06_retention_by_tier.ipynb` | Профили участников | удержание по уровням |
-| `07_teams_experience.ipynb` | Команды и успех | опыт участников и посылки vs место |
-| `08_tags_clustering.ipynb` | Популярность ноутбуков | кластеры тегов |
-| `09_baseline.ipynb` | Прогнозная модель | базовые решения и результаты реального запуска |
-| `10_lightgbm.ipynb` | Прогнозная модель | LightGBM, сравнение, важность признаков |
-
-Общий код: `src/data_loader.py` (загрузка, чтение Submissions по частям),
-`src/features.py` (признаки команд), `src/topics.py` (темы по тегам),
-`src/build_dataset.py` (датасет для модели, кеш в `data/processed/`), `src/modeling.py` (разбиение, метрики, базовые модели).
-
-Реальная проверка и ограничения: [docs/REAL_DATA_CHECK.md](docs/REAL_DATA_CHECK.md). Подробный план — в [docs/plan.md](docs/plan.md).
+Ноутбуки сохраняют историю исследования. Результаты из отчёта воспроизводятся Python-командами выше. Сырые таблицы и кеш в Git не хранятся.
